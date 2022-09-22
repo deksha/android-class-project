@@ -43,17 +43,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun buttonsClickListeners(){
         val bannanaButton = findViewById<ImageButton>(R.id.bannana)
-        bannanaButton.setImageResource(R.drawable.bannana)
         bannanaButton.setOnClickListener {
             fruit = 1
         }
         val strawberryButton = findViewById<ImageButton>(R.id.strawberry)
-        strawberryButton.setImageResource(R.drawable.strawberry)
         strawberryButton.setOnClickListener {
             fruit = 2
         }
         val peachButton = findViewById<ImageButton>(R.id.peach)
-        peachButton.setImageResource(R.drawable.peach)
         peachButton.setOnClickListener {
             fruit = 3
         }
