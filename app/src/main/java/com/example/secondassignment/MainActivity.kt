@@ -6,15 +6,20 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var name:String
+    private lateinit var desc:String
     private var fruit:Int = 2
     val list = getItemList()
-    val adapter = MyAdapter(list)
+    val adapter = MyAdapter(list){
+        displayItemDetailsFragment(it)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +38,12 @@ class MainActivity : AppCompatActivity() {
 
         val addButton = findViewById<Button>(R.id.addButton)
         val nameText = findViewById<EditText>(R.id.text)
+        val itemDesc = findViewById<EditText>(R.id.description)
 
         addButton.setOnClickListener {
             name = nameText.text.toString()
-            println("click")
-            adapter.addItem(Item(name,fruit))
+            desc = itemDesc.text.toString()
+            adapter.addItem(Item(name,fruit,desc))
         }
     }
 
@@ -55,6 +61,24 @@ class MainActivity : AppCompatActivity() {
             fruit = 3
         }
     }
+
+    private fun displayItemDetailsFragment(item: Item){
+        val itemFragment = ItemFragment()
+        val bundle = bundleOf("theItemTitle" to item.title, "theItemImage" to item.getImage(item.image), "theItemDescription" to item.description)
+        itemFragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, itemFragment)
+            .show(itemFragment)
+            .commit()
+
+        val mainScreen = findViewById<ConstraintLayout>(R.id.main_screen)
+        mainScreen.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .hide(itemFragment)
+                .commit()
+        }
+    }
+
 
     private fun getItemList(): MutableList<Item>{
         val itemList = mutableListOf<Item>()

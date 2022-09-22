@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(private val dataList:MutableList<Item>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val dataList:MutableList<Item>, val onItemClick: (Item)-> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(view:View): RecyclerView.ViewHolder(view){
         val textView:TextView
@@ -37,12 +37,17 @@ class MyAdapter(private val dataList:MutableList<Item>): RecyclerView.Adapter<My
         val Item = dataList[position]
         holder.imageView.setImageResource(Item.getImage(Item.image))
         holder.trashImageView.setImageResource(R.drawable.trash)
-        holder.textView.text = Item.name
+        holder.textView.text = Item.title
 
         holder.trashImageView.setOnClickListener{
             dataList.removeAt(holder.layoutPosition)
             notifyItemRemoved(position)
         }
+
+        holder.textView.setOnClickListener {
+            onItemClick(dataList[position])
+        }
+
     }
 
     override fun getItemCount(): Int {

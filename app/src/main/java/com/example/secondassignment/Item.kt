@@ -1,6 +1,6 @@
 package com.example.secondassignment
 
-class Item(val name:String, val image:Int) {
+class Item(val title:String, val image:Int, val description:String) {
 
     fun getImage(image: Int): Int {
         if (image == 1){
