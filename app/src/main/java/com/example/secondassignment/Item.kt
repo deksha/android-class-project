@@ -1,6 +1,17 @@
 package com.example.secondassignment
 
-class Item(val title:String, val image:Int, val description:String) {
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "itemsTable")
+class Item(
+    @ColumnInfo(name = "title")val title:String,
+    @ColumnInfo(name = "image")val image:Int,
+    @ColumnInfo(name = "description")val description:String) {
+
+    @PrimaryKey(autoGenerate = true)
+    var id = 0
 
     fun getImage(image: Int): Int {
         if (image == 1){

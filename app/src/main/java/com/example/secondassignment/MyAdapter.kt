@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(private val dataList:MutableList<Item>, val onItemClick: (Item)-> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val dataList:ArrayList<Item>, val onItemClick: (Item)-> Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(view:View): RecyclerView.ViewHolder(view){
         val textView:TextView
@@ -52,5 +52,11 @@ class MyAdapter(private val dataList:MutableList<Item>, val onItemClick: (Item)-
 
     override fun getItemCount(): Int {
         return dataList.size
+    }
+
+    fun adapterUpdateTheView(itemsList: List<Item>){
+        dataList.clear()
+        dataList.addAll(itemsList)
+        notifyDataSetChanged()
     }
 }

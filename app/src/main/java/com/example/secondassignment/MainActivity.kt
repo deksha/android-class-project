@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,17 +22,31 @@ class MainActivity : AppCompatActivity() {
         displayItemDetailsFragment(it)
     }
 
+    lateinit var repository: Repository
+    val itemList = mutableListOf<Item>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
         setContentView(R.layout.activity_main)
         onAddButtonClickListener()
         buttonsClickListeners()
+
+        val dao = ItemsDataBase.getDatabase(application).getItemsDao()
+        repository = Repository(application)
 
         val listView = findViewById<RecyclerView>(R.id.myList)
 
         listView.adapter = adapter
         listView.layoutManager = LinearLayoutManager(this)
+        val itemsLiveDate = repository.getAllItemsAsLiveData()
+        itemsLiveDate.observe(this){
+            adapter.adapterUpdateTheView(it)
+        }
     }
 
     private fun onAddButtonClickListener(){
@@ -43,7 +58,10 @@ class MainActivity : AppCompatActivity() {
         addButton.setOnClickListener {
             name = nameText.text.toString()
             desc = itemDesc.text.toString()
-            adapter.addItem(Item(name,fruit,desc))
+            val item = Item(name,fruit,desc)
+            thread (start = true){
+                repository.addItem(item)
+            }
         }
     }
 
@@ -80,8 +98,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getItemList(): MutableList<Item>{
-        val itemList = mutableListOf<Item>()
+    private fun getItemList(): ArrayList<Item>{
+        val itemList = ArrayList<Item>()
 
 
         return itemList
