@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         val itemFragment = ItemFragment()
         val bundle = bundleOf("theItemTitle" to item.title, "theItemImage" to item.getImage(item.image), "theItemDescription" to item.description)
         itemFragment.arguments = bundle
+
+        val fragmentDesc = findViewById<TextView>(R.id.fragment_desc)
+        val itemDescriptionFragment = ItemDescriptionFragment()
+        val bundle2 = bundleOf("theItem" to item)
+        itemDescriptionFragment.arguments = bundle2
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_view, itemFragment)
             .show(itemFragment)
@@ -75,8 +82,25 @@ class MainActivity : AppCompatActivity() {
         mainScreen.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .hide(itemFragment)
+                .hide(itemDescriptionFragment)
                 .commit()
         }
+        fragmentDesc.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_desc_editor, itemDescriptionFragment)
+                .show(itemDescriptionFragment)
+                .commit()
+        }
+        val commitChangeDescButton = findViewById<Button>(R.id.text_edit_button)
+        commitChangeDescButton.setOnClickListener {
+            val newDesc = findViewById<EditText>(R.id.desc_edit).text.toString()
+            item.description = newDesc
+            supportFragmentManager.beginTransaction()
+                .hide(itemFragment)
+                .hide(itemDescriptionFragment)
+                .commit()
+        }
+
     }
 
 

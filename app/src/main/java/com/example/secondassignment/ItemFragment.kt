@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 
 class ItemFragment: Fragment(R.layout.item_fragment) {
@@ -21,4 +22,5 @@ class ItemFragment: Fragment(R.layout.item_fragment) {
         itemImageView.setImageResource(image)
         itemDescTextView.text = description
     }
+
 }
