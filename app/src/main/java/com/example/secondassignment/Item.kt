@@ -4,11 +4,17 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+enum class IMAGE_TYPE{
+    URI, URL
+}
+
 @Entity(tableName = "itemsTable")
 class Item(
     @ColumnInfo(name = "title")val title:String,
-    @ColumnInfo(name = "image")val image:Int,
-    @ColumnInfo(name = "description")val description:String) {
+    @ColumnInfo(name = "description")val description:String,
+    @ColumnInfo(name = "image_path")var imagePath:String? = null,
+    @ColumnInfo(name = "image_type")var imageType:IMAGE_TYPE? = null
+    ) {
 
     @PrimaryKey(autoGenerate = true)
     var id = 0
